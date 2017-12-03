@@ -33,8 +33,6 @@ const OPTIONS = minimist(process.argv.slice(2), {
 const isDev = OPTIONS.env === 'development';
 OPTIONS.isDev = isDev;
 
-console.log(OPTIONS);
-
 export function index () {
   const moduleName = 'index';
   const options = { ...OPTIONS, moduleName };
