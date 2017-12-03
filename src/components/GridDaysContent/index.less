@@ -1,0 +1,25 @@
+@import (reference, once) "../../style/variables";
+
+.GridDaysContent {
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding-top: @day-hour-margin;
+  padding-bottom: @day-hour-margin;
+
+  &_Scroll {
+    height: 100%;
+    position: relative;
+    margin-left: @day-hours-width;
+    //will-change: transform;
+    //transition: transform ease-out 0.1s;
+  }
+
+  .mobile({
+    padding-top: @day-hour-margin;
+    padding-bottom: @day-hour-margin;
+  })
+}

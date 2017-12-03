@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title></title>
+    <link rel="stylesheet" href="../dist/index.css" />
+
+    <script>
+      document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] +
+      ':35729/livereload.js?snipver=1"></' + 'script>')
+    </script>
+
+    <style>
+      html, body { height: 100%; padding: 0; margin: 0;}
+      #app { position: relative; height: 100%; }
+      form { font-size: 12px; }
+      form.toggle { display: none; }
+      form input { width: 100px; }
+      .btn { position: absolute; z-index: 999;}
+      .code {width: 100px; overflow-x: hidden; overflow-y: auto; word-wrap: break-word; max-height: 50px; font-size: 10px;}
+    </style>
+</head>
+<body>
+  <table width="100%" height="100%">
+    <tr>
+      <td width="100%" height="100%" valign="top">
+        <input class="btn" type="button" value="toggle" onclick="document.forms[0].classList.toggle('toggle')" />
+        <div id="app"></div>
+      </td>
+      <td valign="top">
+        <form onsubmit="return onSubmit(event);">
+          <div id="form" style="overflow-y: scroll;height: 600px;"></div>
+          <input type="submit" />
+        </form>
+      </td>
+    </tr>
+  </table>
+
+  <script src="../dist/vendor.js"></script>
+  <script src="../dist/index.js"></script>
+
+  <script>
+    vendor._preact.render((
+      vendor._preact.h(Calendar.Calendar, {
+        upload: function () {},
+        update: function () {}
+      })
+    ), document.getElementById('app'));
+  </script>
+
+  <script>
+    function createForm(state) {
+      var form = '<table>';
+
+      for (var name in state) {
+        var value = state[name];
+        var type = typeof value;
+        var descriptor = Object.getOwnPropertyDescriptor(state, name);
+        var disabled = descriptor.writable || descriptor.set ? '' : '';
+        var style = descriptor.writable || descriptor.set ? '' : 'style="background: #eee;"';
+
+        switch (type) {
+          case 'string':
+          case 'number':
+          case 'undefined':
+            form += '<tr><td valign="top">' + name + '</td><td><input name="' + name + '" value="' + value + '" ' + disabled + ' ' + style + ' /></td></tr>';
+            break;
+          case 'boolean':
+            form += '<tr><td valign="top">' + name + '</td><td><input type="checkbox" name="' + name + '" ' + (value ? 'checked' : '') + ' value="1" ' + disabled + ' ' + style + ' /></td></tr>';
+            break;
+          case 'object':
+          default:
+            if (value instanceof Date) {
+              form += '<tr><td valign="top">' + name + '</td><td><input name="' + name + '" value="' + value + '" ' + disabled + ' ' + style + ' /></td></tr>';
+            } else {
+              form += '<tr><td valign="top">' + name + '</td><td><div name="' + name + '" class="code">' + JSON.stringify(value) + '</div></td></tr>';
+            }
+        }
+      }
+
+      form += '</table>';
+      return form;
+    }
+
+    function updateForm(state) {
+      for (var name in state) {
+        var element = document.querySelector('[name="' + name + '"]');
+        if (!element) {
+          continue;
+        }
+
+        var value = state[name];
+        var type = typeof value;
+
+        switch (type) {
+          case 'string':
+          case 'number':
+          case 'undefined':
+            element.value = value;
+            break;
+          case 'boolean':
+            element.checked = Boolean(value);
+            break;
+          case 'object':
+          default:
+            if (value instanceof Date) {
+              element.value = value.toLocaleString ? value.toLocaleString() : value.toString();
+            } else {
+              element.innerText = JSON.stringify(value);
+            }
+        }
+      }
+    }
+
+    function getFormData(state) {
+      var newState = {};
+
+      for (var name in state) {
+        var descriptor = Object.getOwnPropertyDescriptor(state, name);
+        var isWritable = descriptor.writable || descriptor.set ? true : false;
+
+        if (!isWritable) {
+          continue;
+        }
+
+        var element = document.querySelector('[name="' + name + '"]');
+        if (!element) {
+          continue;
+        }
+
+        var value = state[name];
+        var type = typeof value;
+
+        switch (type) {
+          case 'string':
+            newState[name] = String(element.value);
+            break;
+          case 'number':
+          case 'undefined':
+            newState[name] = Number(element.value);
+            break;
+          case 'boolean':
+            newState[name] = element.checked;
+            break;
+          /*case 'object':
+            if (value instanceof Date) {
+              newState[name] = new Date(element.value);
+            }
+            break;*/
+        }
+      }
+
+      return newState;
+    }
+  </script>
+
+  <script>
+    var state = window.store.getState();
+
+    document.getElementById('form').innerHTML = (
+      createForm(state) +
+      '<hr/>'
+    );
+
+    window.store.addChangeListener(upgrade);
+
+    function upgrade () {
+      var state = window.store.getState();
+      updateForm(state);
+    }
+
+    function onSubmit (event) {
+      event.preventDefault();
+
+      var state = window.store.getState();
+      var newState = getFormData(state);
+      console.log('grid', newState);
+      window.store.update(newState);
+
+      return false;
+    }
+  </script>
+</body>
+</html>

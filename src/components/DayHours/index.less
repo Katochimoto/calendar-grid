@@ -1,0 +1,41 @@
+@import (reference, once) "../../style/variables";
+
+.DayHours {
+  visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  color: @day-hour-color;
+  font-size: @day-hour-size;
+  line-height: @day-hour-size;
+
+  pointer-events: none;
+
+  height: 100%;
+  width: 100%;
+
+  &_Item {
+    visibility: visible;
+    position: relative;
+    height: 1px;
+    background-color: @day-hour-separator-color;
+
+    &:before {
+      position: absolute;
+      display: block;
+
+      left: -1 * @day-hours-width;
+      top: -0.5 * @day-hour-size;
+      width: @day-hours-width - 0.5em;
+
+      text-align: right;
+      white-space: nowrap;
+      content: attr(data-hour);
+
+      .mobile({
+        top: -0.5 * @day-hour-size-mobile;
+      })
+    }
+  }
+}

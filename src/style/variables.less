@@ -1,0 +1,86 @@
+@base-font-size: 13px;
+
+@day-hours-width: 4em;
+@day-weekend-background-color: fade(#f1f1f1, 30%);
+@day-separator-color: darken(#fcfcfc, 10%);
+@day-hour-separator-color: darken(#fcfcfc, 5%);
+@day-weekend-title-font-color: #888;
+
+@day-hour-color: #888;
+@day-hour-size: 1em;
+@day-hour-size-mobile: 1.05em;
+@day-hour-margin: 0.5 * @day-hour-size;
+@day-hour-margin-mobile: 0.5 * @day-hour-size-mobile;
+
+@day-event-color: #00f;
+@day-event-background-color: fade(@day-event-color, 20%); // #c6c6f9;
+@day-event-background-selected-color: fade(@day-event-color, 30%);
+@day-event-border-color: fade(@day-event-color, 50%); // #7c7cfb;
+
+@day-header-title-font-size: 1.2em;
+@day-header-title-line-height: 1.2em;
+@day-header-title-font-size-mobile: 1em;
+@day-header-title-line-height-mobile: 1.2em;
+
+// сетка на месяц
+@month-title-date-font-size: 1em;
+@month-title-date-margin: 0.3em;
+@month-title-current-date-padding: 0.1em;
+@month-title-date-size: @month-title-date-font-size + 0.4;
+@month-title-height: @month-title-date-size + @month-title-date-margin * 2;
+@month-title-current-color: #fff;
+@month-title-current-background: #f00;
+
+.mobile (@rules) {
+  @media
+    screen and (max-width: 480px),
+    screen and (max-width: 600px) and (orientation: landscape) {
+
+    @rules();
+  }
+}
+
+.desktop (@rules) {
+  @media screen and (min-width: 1200px) {
+    @rules();
+  }
+}
+
+.print (@rules) {
+  @media print {
+    @rules();
+  }
+}
+
+.hdpi (@rules) {
+  @media
+    only screen and (-webkit-min-device-pixel-ratio: 1.5),
+    only screen and (-webkit-min-device-pixel-ratio: 2),
+    only screen and (   min--moz-device-pixel-ratio: 2),
+    only screen and (     -o-min-device-pixel-ratio: 2/1),
+    only screen and (        min-device-pixel-ratio: 2),
+    only screen and (                min-resolution: 192dpi),
+    only screen and (                min-resolution: 2dppx) {
+
+    @rules();
+  }
+}
+
+.randomColor () {
+  @randomColor: `'0123456789ABCDEF'.split('').sort(function(){return.5-Math.random()}).slice(0,6).join('')`;
+  @colorHex: e(@randomColor);
+  @color: ~"#@{colorHex}";
+}
+
+.repeat (@name; @count; @sep: " ") {
+  @_repeat: `Array(@{count}).fill(@{name}).join(@{sep})`;
+  @repeat: ~"@{_repeat}";
+}
+
+.loop (@cnt; @rules; @index: 1) when (@index =< @cnt) {
+  .loop(@cnt; @rules; (@index + 1));
+
+  &@{index} {
+    @rules();
+  }
+}

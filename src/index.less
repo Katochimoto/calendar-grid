@@ -1,0 +1,27 @@
+@import (reference, once) "./style/variables.less";
+
+.Calendar {
+  // создает новый слой
+  // contain: strict; // http://caniuse.com/#feat=css-containment
+  font-size: @base-font-size;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  -webkit-font-smoothing: antialiased;
+          font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+          tap-highlight-color: transparent;
+
+  table,tr,td,thead,tbody {
+    padding: 0;
+    margin: 0;
+  }
+
+  table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    table-layout: fixed;
+  }
+}

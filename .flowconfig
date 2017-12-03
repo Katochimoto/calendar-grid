@@ -1,0 +1,15 @@
+[ignore]
+src/**/*.spec.js
+node_modules
+dist
+sample
+tasks
+
+[include]
+src/**/*.js
+
+[options]
+emoji=true
+module.use_strict=true
+esproposal.decorators=ignore
+server.max_workers=1

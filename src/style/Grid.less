@@ -1,0 +1,45 @@
+@import (reference, once) "./variables";
+
+.Grid {
+  display: grid;
+  justify-items: stretch;
+  justify-content: stretch;
+  align-items: stretch;
+  align-content: stretch;
+  grid-row-gap: 1px;
+
+  &__columns {
+    .loop(7; {
+      .repeat("auto"; @index);
+      grid-template-columns: @repeat;
+    });
+  }
+
+  &__rows {
+    .loop(10; {
+      .repeat("auto"; @index);
+      grid-template-rows: @repeat;
+    });
+  }
+
+  &_ColumnStart {
+    .loop(7; {
+      //width: ( percentage(@index / @columns) );
+      .randomColor();
+      grid-column-start: @index;
+      background-color: @color;
+    });
+  }
+
+  &_ColumnEnd {
+    .loop(7; {
+      grid-column-end: @index + 1;
+    });
+  }
+
+  &_RowStart {
+    .loop(10; {
+      grid-row-start: @index;
+    });
+  }
+}

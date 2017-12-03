@@ -1,0 +1,23 @@
+@import (reference, once) "../../style/variables";
+
+.DayEvent {
+  visibility: visible;
+  position: absolute;
+  outline: none;
+  background: @day-event-background-color;
+  border-right: 2px solid transparent;
+  border-left: 2px solid @day-event-border-color;
+  padding: 0 2px;
+  margin: 1px 0;
+  box-sizing: border-box;
+  background-clip: padding-box;
+  white-space: initial;
+
+  &__selected {
+    background: @day-event-background-selected-color;
+  }
+
+  .mobile({
+    border-left: 1px solid @day-event-border-color;
+  })
+}

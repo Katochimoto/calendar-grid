@@ -1,0 +1,14 @@
+@import (reference, once) "../../style/variables";
+
+.Day {
+  display: table-cell;
+  position: relative;
+  width: 1%;
+  height: 100%;
+  box-sizing: border-box;
+  border-right: 1px solid @day-separator-color;
+
+  &__weekend {
+    background: @day-weekend-background-color;
+  }
+}

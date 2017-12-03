@@ -1,0 +1,25 @@
+.InfiniteList {
+  contain: strict;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  &_Content {
+    width: 100%;
+    height: 100%;
+    white-space: nowrap;
+    box-sizing: border-box;
+
+    &__scrolling {
+      pointer-events: none;
+      will-change: transform, transition;
+    }
+
+    &__animation {
+      transition: transform ease-out 0.1s;
+    }
+  }
+}

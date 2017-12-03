@@ -1,0 +1,29 @@
+@import (reference, once) "../../style/variables";
+
+.DayHeader {
+  display: table-cell;
+  position: relative;
+  height: 100%;
+
+  &__weekend {
+    .DayHeader_Title {
+      color: @day-weekend-title-font-color;
+    }
+  }
+
+  &_Title {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+
+    font-size: @day-header-title-font-size;
+    line-height: @day-header-title-line-height;
+    padding: 0 6px;
+
+    .mobile({
+      font-size: @day-header-title-font-size-mobile;
+      line-height: @day-header-title-line-height-mobile;
+    })
+  }
+}

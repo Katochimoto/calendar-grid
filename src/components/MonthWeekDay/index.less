@@ -1,0 +1,79 @@
+@import (reference, once) "../../style/variables";
+
+.MonthWeekDay {
+  border-right: 1px solid #ddd;
+  border-top: 1px solid #ddd;
+  flex-basis: 0;
+  flex-grow: 1;
+  flex-shrink: 0;
+  overflow: hidden;
+  position: relative;
+
+  &:last-child {
+    border-right: none;
+  }
+
+  &__weekend {
+    background: @day-weekend-background-color;
+  }
+
+  &__trbl2 {
+    box-shadow:
+      inset 0px -2px 0px 0px #ddd; // bottom
+  }
+
+  &__trbl6 {
+    box-shadow:
+      inset -1px 0px 0px 0px #ddd, // right
+      inset 0px -2px 0px 0px #ddd; // bottom
+  }
+
+  &__trbl8 {
+    box-shadow:
+      inset 0px 2px 0px 0px #ddd; // top
+  }
+
+  &__trbl9 {
+    box-shadow:
+      inset 1px 0px 0px 0px #ddd, // left
+      inset 0px 2px 0px 0px #ddd; // top
+  }
+}
+
+.MonthWeekDay_DateTitle {
+  cursor: pointer;
+  display: inline-block;
+  font-size: 1em;
+  line-height: 1.6em;
+  margin: 0 0.3em;
+  position: absolute;
+  right: 0;
+  text-align: right;
+  text-transform: lowercase;
+  top: 0;
+
+  .mobile({
+    line-height: 1.4em;
+    margin: 0 0.2em;
+  })
+}
+
+.MonthWeekDay_Date {
+  display: inline-block;
+}
+
+.MonthWeekDay_Month {
+  margin-left: 3px;
+
+  .mobile({
+    display: none;
+  })
+}
+
+.MonthWeekDay__current {
+  .MonthWeekDay_Date {
+    color: #f00;
+    font-weight: bold;
+    text-decoration: underline;
+  }
+}
