@@ -22,10 +22,9 @@ const external = {
 export default function (options) {
   const lessOptions = getLessOptions(options);
 
-  return {
+  const rollupOptions = {
     input: `${options.src}/${options.moduleName}.js`,
-    format: 'umd', // 'es',
-    name: 'Calendar',
+    format: options.isDev ? 'umd' : 'es',
     strict: true,
     globals: external,
 
@@ -97,4 +96,10 @@ export default function (options) {
       })
     ]
   };
+
+  if (options.isDev) {
+    rollupOptions.name = 'Calendar';
+  }
+
+  return rollupOptions;
 };

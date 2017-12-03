@@ -12,7 +12,7 @@ export function options (options) {
 
   const cssModulesParams = {
     mode: 'local',
-    hashPrefix: 'calendar',
+    hashPrefix: 'calendar-grid',
     generateScopedName: '[local]___[hash:base64:5]' // '[hash:base64:8]'
   };
 

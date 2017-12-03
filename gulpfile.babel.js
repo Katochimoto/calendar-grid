@@ -1,7 +1,7 @@
 import gulp from 'gulp';
 import rollup from 'rollup-stream';
-import gulpif from 'gulp-if';
-import uglify from 'gulp-uglify';
+// import gulpif from 'gulp-if';
+// import uglify from 'gulp-uglify';
 import sourcemaps from 'gulp-sourcemaps';
 import gulpConnect from 'gulp-connect';
 import mocha from 'gulp-mocha';
@@ -13,6 +13,10 @@ import buffer from 'vinyl-buffer';
 import vendorRollup from './tasks/rollup.vendor.js';
 import indexRollup from './tasks/rollup.index.js';
 
+var NODE_ENV = process.env.npm_lifecycle_event === 'build' ?
+  'production' :
+  'development';
+
 const OPTIONS = minimist(process.argv.slice(2), {
   string: [
     'env',
@@ -20,11 +24,16 @@ const OPTIONS = minimist(process.argv.slice(2), {
     'src'
   ],
   default: {
-    env: process.env.NODE_ENV || 'development', //'production'
+    env: NODE_ENV,
     dist: 'dist',
     src: 'src'
   }
 });
+
+const isDev = OPTIONS.env === 'development';
+OPTIONS.isDev = isDev;
+
+console.log(OPTIONS);
 
 export function index () {
   const moduleName = 'index';
@@ -34,7 +43,7 @@ export function index () {
     .pipe(source('index.js', OPTIONS.src))
     .pipe(buffer())
     .pipe(sourcemaps.init())
-    .pipe(gulpif(OPTIONS.env === 'production', uglify()))
+    // .pipe(gulpif(!isDev, uglify()))
     .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest(OPTIONS.dist));
 }
@@ -47,7 +56,7 @@ export function vendor () {
     .pipe(source('vendor.js', OPTIONS.src))
     .pipe(buffer())
     .pipe(sourcemaps.init())
-    .pipe(gulpif(OPTIONS.env === 'production', uglify()))
+    // .pipe(gulpif(!isDev, uglify()))
     .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest(OPTIONS.dist));
 }
@@ -57,11 +66,11 @@ export function watch() {
     'src/**/*.js',
     'src/**/*.less',
     'src/**/*.svg'
-  ], gulp.parallel(index, mainhtml));
+  ], gulp.parallel(index));
 }
 
 export function clean () {
-  return del([ OPTIONS.dist ]);
+  return del([ OPTIONS.dist + '/**/*' ]);
 }
 
 export function test () {
