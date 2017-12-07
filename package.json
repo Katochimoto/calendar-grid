@@ -1,7 +1,8 @@
 {
   "name": "calendar-grid",
   "version": "0.1.0",
-  "main": "dist/main.js",
+  "main": "src/index.js",
+  "module": "src/index.js",
   "author": "rikishi <rikishi.protonmail.ch>",
   "license": "MIT",
   "electronVersion": "1.6.10",
