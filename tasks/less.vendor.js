@@ -1,19 +1,20 @@
-import autoprefixer from 'autoprefixer';
-import postcss from 'postcss';
-import mqpacker from 'css-mqpacker';
+import autoprefixer from 'autoprefixer'
+import postcss from 'postcss'
+import mqpacker from 'css-mqpacker'
 
 export function options (options) {
+  const isDev = options.isDev
   const postcssProcessParams = {
     to: `${options.moduleName}.css`,
-    map: { inline: false }
-  };
+    map: isDev ? { inline: false } : false
+  }
 
   return {
     output: `${options.dist}/${options.moduleName}.css`,
     onWriteBefore: function (css, map) {
-      return runPostcss(css, map, postcssProcessParams);
+      return runPostcss(css, map, postcssProcessParams)
     }
-  };
+  }
 }
 
 function runPostcss (css, map, processParams) {
@@ -23,7 +24,7 @@ function runPostcss (css, map, processParams) {
   ]).process(css, processParams).then(function (result) {
     return {
       css: result.css,
-      map: JSON.parse(result.map)
-    };
-  });
+      map: result.map && JSON.parse(result.map)
+    }
+  })
 }

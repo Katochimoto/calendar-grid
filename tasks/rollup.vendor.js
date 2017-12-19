@@ -1,21 +1,24 @@
-import RollupPluginBabel from 'rollup-plugin-babel';
-import RollupPluginInject from 'rollup-plugin-inject';
-import RollupPluginNodeResolve from 'rollup-plugin-node-resolve';
-import RollupPluginCommonJS from 'rollup-plugin-commonjs';
-import RollupPluginReplace from 'rollup-plugin-replace';
-import RollupPluginBuble from 'rollup-plugin-buble';
-import RollupPluginLess2 from 'rollup-plugin-less2';
-import RollupPluginPreprocess from 'rollup-plugin-preprocess';
+import RollupPluginBabel from 'rollup-plugin-babel'
+import RollupPluginInject from 'rollup-plugin-inject'
+import RollupPluginNodeResolve from 'rollup-plugin-node-resolve'
+import RollupPluginCommonJS from 'rollup-plugin-commonjs'
+import RollupPluginReplace from 'rollup-plugin-replace'
+import RollupPluginBuble from 'rollup-plugin-buble'
+import RollupPluginLess2 from 'rollup-plugin-less2'
+import RollupPluginPreprocess from 'rollup-plugin-preprocess'
 
 import {
   options as getLessOptions
-} from './less.vendor.js';
+} from './less.vendor.js'
 
 export default function (options) {
-  const lessOptions = getLessOptions(options);
+  const lessOptions = getLessOptions(options)
+  const env = options.env
+  const moduleName = options.moduleName
+  const src = options.src
 
   return {
-    input: `${options.src}/${options.moduleName}.js`,
+    input: `${src}/${moduleName}.js`,
     format: 'iife',
     exports: 'default',
     name: 'vendor',
@@ -27,7 +30,7 @@ export default function (options) {
       RollupPluginLess2(lessOptions),
 
       RollupPluginReplace({
-        'process.env.NODE_ENV': JSON.stringify(options.env)
+        'process.env.NODE_ENV': JSON.stringify(env)
       }),
 
       RollupPluginBabel({
@@ -74,9 +77,9 @@ export default function (options) {
 
       RollupPluginPreprocess({
         context: {
-          NODE_ENV: options.env
+          NODE_ENV: env
         }
       })
     ]
-  };
+  }
 }
