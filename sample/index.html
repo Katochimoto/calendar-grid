@@ -41,10 +41,107 @@
   <script src="../dist/index.js"></script>
 
   <script>
+    function parseDate (date) {
+      var _ = date / 100 ^ 0;
+      var y = date / 10000 ^ 0;
+      var m = (_ - 100 * y) - 1;
+      var d = date - _ * 100;
+      return new Date(y, m, d, 0, 0, 0, 0);
+    }
+
+    function formatDate (date) {
+      return (
+        (date.getFullYear() * 10000) +
+        ((date.getMonth() + 1) * 100) +
+        date.getDate()
+      );
+    }
+
+    function offsetOnDay (date, offset) {
+      var d = parseDate(date);
+      d.setDate(d.getDate() + offset);
+      return formatDate(d);
+    }
+
+    function uploadEvents (interval, callback) {
+      var events = generateEvents(interval);
+      callback.call(this, null, interval, events);
+    }
+
+    function updateEvents (callback) {
+      // callback.call(this);
+    }
+
+    function generateEvents (interval) {
+      var dateBegin = interval[0]
+      var dateEnd = interval[1] || dateBegin;
+      var events = [];
+      var currentDate = dateBegin;
+
+      while (currentDate <= dateEnd) {
+        events.push(
+          generateEvent([currentDate, currentDate]),
+          generateEvent([currentDate, currentDate]),
+          generateEvent([currentDate, currentDate]),
+          generateEvent([currentDate, currentDate]),
+          generateEvent([currentDate, currentDate])
+        );
+        currentDate = offsetOnDay(currentDate, 1);
+      }
+
+      events.sort(function (a, b) {
+        var ab = a.dateBegin;
+        var bb = b.dateBegin;
+
+        if (ab > bb) {
+          return 1;
+        } else if (ab < bb) {
+          return -1;
+        } else {
+          var atb = a.timeBegin;
+          var btb = b.timeBegin;
+
+          if (atb > btb) {
+            return 1;
+          } else if (atb < btb) {
+            return -1;
+          } else {
+            return 0;
+          }
+        }
+      });
+
+      return events;
+    }
+
+    function generateEvent (interval) {
+      var dateBegin = interval[0]
+      var dateEnd = interval[1] || dateBegin;
+      var timeBegin = getRandomInt(0, 23 * 60);
+      var timeEnd = getRandomInt(timeBegin + 30, 24 * 60);
+
+      return {
+        id: dateBegin + 'T' + timeBegin + '--' + dateEnd + 'T' + timeEnd,
+        dateBegin: dateBegin,
+        dateEnd: dateEnd,
+        timeBegin: timeBegin * 60 * 1000,
+        timeEnd: timeEnd * 60 * 1000,
+        title: dateBegin + ' ' + timeBegin + ':' + timeEnd,
+        updated: Math.random() + 1
+      };
+    }
+
+    function getRandomInt(min, max) {
+      return Math.floor(Math.random() * (max - min)) + min;
+    }
+
+  </script>
+
+  <script>
     vendor._preact.render((
       vendor._preact.h(Calendar.Calendar, {
-        upload: function () {},
-        update: function () {}
+        upload: uploadEvents,
+        update: updateEvents
       })
     ), document.getElementById('app'));
   </script>

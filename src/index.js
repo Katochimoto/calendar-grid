@@ -23,8 +23,9 @@ export class Calendar extends Component {
       update: props.update,
     }));
 
-    // FIXME remove later
+    /* @if NODE_ENV=='development' **
     window.store = this._store;
+    /* @endif */
   }
 
   getChildContext () {
