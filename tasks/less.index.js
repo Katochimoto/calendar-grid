@@ -7,6 +7,7 @@ import mqpacker from 'css-mqpacker'
 export function options (options) {
   const isDev = options.isDev
   const postcssProcessParams = {
+    from: `${options.src}/${options.moduleName}.css`,
     to: `${options.moduleName}.css`,
     map: isDev ? { inline: false } : false
   }
